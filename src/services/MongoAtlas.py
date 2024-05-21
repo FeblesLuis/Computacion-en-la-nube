@@ -7,6 +7,25 @@ class MongoDBConnector:
     def __init__(self):
         load_dotenv(".env")
         try:
+            print("Epaa")
+            print("Epaa")
+            print("Epaa")
+            print("Epaa")
+            print("Epaa")
+            print("Epaa")
+            print("Epaa")
+            print(os.getenv('host'))
+            print(os.getenv('port'))
+            print(os.getenv('database_name'))
+            print(os.getenv('collection_name'))
+            print("Epaa")
+            print("Epaa")
+            print("Epaa")
+            print("Epaa")
+            print("Epaa")
+            print("Epaa")
+            
+
             self.client = MongoClient(os.getenv('host'), int(os.getenv('port')))
             db = self.client[str(os.getenv('database_name'))]
             collection = db[os.getenv('collection_name')]

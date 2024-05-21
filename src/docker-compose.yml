@@ -3,18 +3,22 @@ version: '3.8'
 services:
   app:
     build: .
+    restart: always
     command: sh -c "uvicorn main:app --reload --port=8000 --host=0.0.0.0"
     ports:
       - "8000:8000"
+    links:
+      - mongo
 
   mongo:
     container_name: mongo
-    image: mongo:latest
+    image: mongo:4-focal
     restart: always
     hostname: host-mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${user}
       MONGO_INITDB_ROOT_PASSWORD: ${pass}
+      MONGO_INITDB_DATABASE: ${database_name}
     volumes:
       - ./data:/data/db
       - ./data/log:/var/log/mongodb
