@@ -7,34 +7,26 @@ class MongoDBConnector:
     def __init__(self):
         load_dotenv(".env")
         try:
-            print("Epaa")
-            print("Epaa")
-            print("Epaa")
-            print("Epaa")
-            print("Epaa")
-            print("Epaa")
-            print("Epaa")
-            print(os.getenv('host'))
-            print(os.getenv('port'))
-            print(os.getenv('database_name'))
-            print(os.getenv('collection_name'))
-            print("Epaa")
-            print("Epaa")
-            print("Epaa")
-            print("Epaa")
-            print("Epaa")
-            print("Epaa")
-            
-
             self.client = MongoClient(os.getenv('host'), int(os.getenv('port')))
-            db = self.client[str(os.getenv('database_name'))]
-            collection = db[os.getenv('collection_name')]
-            self.documents = collection.find()
+            db_name = os.getenv('database_name')
+            self.db = self.client[db_name]
+
+            # Verificar si la base de datos ya existe
+            db_list = self.client.list_database_names()
+            if db_name not in db_list:
+                # Si no existe, crearla
+                self.db.command("create", db_name)
+                print("La base de datos '{}' ha sido creada exitosamente.".format(db_name))
+
+            collection_name = os.getenv('collection_name')
+            self.collection = self.db[collection_name]
+            self.documents = self.collection.find()
+            print("Conexión establecida con éxito")
         except Exception as ex:
-            print("Error al conectar con la BD {}".format(ex))
+            print("Error al conectar con la BD:", ex)
         finally:
             print("Conexión finalizada")
-    
+
     #Funcion que insertadatos en la tabla usuarios
     #
     def insert_Users(self, document): 
